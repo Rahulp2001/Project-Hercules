@@ -19,7 +19,7 @@ export async function create(req: Request, res: Response, next: NextFunction) {
 
 export async function get(req: Request, res: Response, next: NextFunction) {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     const profile = await profileService.getProfile(id);
     if (!profile) {
       res.status(404).json({ error: 'Profile not found' });
@@ -39,7 +39,7 @@ export async function get(req: Request, res: Response, next: NextFunction) {
 
 export async function update(req: Request, res: Response, next: NextFunction) {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     const profile = await profileService.updateProfile(id, req.body);
     if (!profile) {
       res.status(404).json({ error: 'Profile not found' });

@@ -27,7 +27,7 @@ export async function getByDate(req: Request, res: Response, next: NextFunction)
 
 export async function getById(req: Request, res: Response, next: NextFunction) {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     const workout = await workoutService.getWorkoutById(id);
     if (!workout) {
       res.status(404).json({ error: 'Workout not found' });
@@ -41,7 +41,7 @@ export async function getById(req: Request, res: Response, next: NextFunction) {
 
 export async function remove(req: Request, res: Response, next: NextFunction) {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     await workoutService.deleteWorkout(id);
     res.json({ success: true });
   } catch (err) {

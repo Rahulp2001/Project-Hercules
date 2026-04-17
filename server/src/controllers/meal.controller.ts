@@ -27,7 +27,7 @@ export async function getByDate(req: Request, res: Response, next: NextFunction)
 
 export async function update(req: Request, res: Response, next: NextFunction) {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     const meal = await mealService.updateMeal(id, req.body);
     res.json(meal);
   } catch (err) {
@@ -37,7 +37,7 @@ export async function update(req: Request, res: Response, next: NextFunction) {
 
 export async function remove(req: Request, res: Response, next: NextFunction) {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id as string);
     await mealService.deleteMeal(id);
     res.json({ success: true });
   } catch (err) {
