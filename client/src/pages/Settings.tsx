@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Bell, Droplet, Footprints, Moon, Target, Trash2 } from 'lucide-react';
+import { Droplet, Footprints, Moon, Trash2 } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
@@ -22,9 +22,9 @@ export function Settings() {
   useEffect(() => {
     if (!profileId) return;
     settingsApi.get(profileId).then((s: any) => {
-      if (s?.dailyWaterGoal) setWaterGoal(String(s.dailyWaterGoal));
-      if (s?.dailyStepGoal) setStepGoal(String(s.dailyStepGoal));
-      if (s?.sleepGoalHours) setSleepGoal(String(s.sleepGoalHours));
+      if (s?.waterGoal) setWaterGoal(String(s.waterGoal));
+      if (s?.stepGoal) setStepGoal(String(s.stepGoal));
+      if (s?.sleepGoal) setSleepGoal(String(s.sleepGoal));
     }).catch(() => {});
   }, [profileId]);
 
@@ -33,9 +33,9 @@ export function Settings() {
     setSaving(true);
     try {
       await settingsApi.update(profileId, {
-        dailyWaterGoal: Number(waterGoal),
-        dailyStepGoal: Number(stepGoal),
-        sleepGoalHours: Number(sleepGoal),
+        waterGoal: Number(waterGoal),
+        stepGoal: Number(stepGoal),
+        sleepGoal: Number(sleepGoal),
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);

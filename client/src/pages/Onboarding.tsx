@@ -44,7 +44,7 @@ function toCm(feet: number, inches: number, unit: 'cm' | 'ft', cmValue: number) 
   return feet * 30.48 + inches * 2.54;
 }
 
-const TOTAL_STEPS = 6; // welcome + 5 question steps + results = handled below
+
 
 export function Onboarding() {
   const navigate = useNavigate();

@@ -16,7 +16,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Maximize2, Minimize2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 
 export type WidgetSize = 'full' | 'half';
 
@@ -49,7 +49,7 @@ function SortableWidget({
     gridColumn: size === 'full' ? 'span 2 / span 2' : 'span 1 / span 1',
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 16 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
   };
@@ -59,9 +59,8 @@ function SortableWidget({
       <motion.div variants={itemVariants}>
         {/* Toolbar: drag + resize */}
         <div
-          className={`absolute top-2 right-2 z-20 flex items-center gap-1 transition-opacity ${
-            isDragOverlay ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-          }`}
+          className={`absolute top-2 right-2 z-20 flex items-center gap-1 transition-opacity ${isDragOverlay ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            }`}
         >
           <button
             onClick={onToggleSize}
@@ -98,7 +97,7 @@ export function DashboardGrid({ widgets: initialWidgets, storageKey }: Props) {
           return parsed;
         }
       }
-    } catch {}
+    } catch { }
     return initialWidgets.map((w) => w.id);
   });
 
@@ -108,7 +107,7 @@ export function DashboardGrid({ widgets: initialWidgets, storageKey }: Props) {
     try {
       const saved = localStorage.getItem(sizeKey);
       if (saved) return { ...defaults, ...JSON.parse(saved) };
-    } catch {}
+    } catch { }
     return defaults;
   });
 
@@ -185,7 +184,7 @@ export function DashboardGrid({ widgets: initialWidgets, storageKey }: Props) {
             <SortableWidget
               {...activeWidget}
               size={sizes[activeWidget.id] ?? 'full'}
-              onToggleSize={() => {}}
+              onToggleSize={() => { }}
               isDragOverlay
             />
           </div>

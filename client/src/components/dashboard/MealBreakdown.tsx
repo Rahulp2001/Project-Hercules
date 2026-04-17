@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Coffee, Sun, Moon, Cookie, Plus, Trash2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card } from '../ui/Card';
 import { FoodLogger } from '../loggers/FoodLogger';
 import { mealsApi } from '../../api';

@@ -1,7 +1,7 @@
 import { Footprints } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { ProgressRing } from '../ui/ProgressRing';
-import { AnimatedNumber } from '../ui/AnimatedNumber';
+
 
 export function StepsCard({ count, goal }: { count: number; goal: number }) {
   return (
