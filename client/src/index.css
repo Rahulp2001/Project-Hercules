@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode */
+    --bg: 240 242 255;
+    --bg-card: 255 255 255;
+    --bg-elevated: 232 235 250;
+    --bg-glass: 255 255 255;
+    --bg-glass-alpha: 0.75;
+    --text-primary: 15 15 30;
+    --text-secondary: 60 60 90;
+    --text-muted: 120 120 150;
+    --border: 100 80 200;
+    --border-alpha: 0.12;
+    --mesh-1: rgba(139, 92, 246, 0.07);
+    --mesh-2: rgba(59, 130, 246, 0.05);
+    --mesh-3: rgba(16, 185, 129, 0.04);
+  }
+
+  .dark {
+    --bg: 8 8 14;
+    --bg-card: 16 16 26;
+    --bg-elevated: 24 24 38;
+    --bg-glass: 20 20 32;
+    --bg-glass-alpha: 0.75;
+    --text-primary: 240 240 248;
+    --text-secondary: 160 160 185;
+    --text-muted: 100 100 125;
+    --border: 200 180 255;
+    --border-alpha: 0.08;
+    --mesh-1: rgba(139, 92, 246, 0.12);
+    --mesh-2: rgba(59, 130, 246, 0.08);
+    --mesh-3: rgba(16, 185, 129, 0.05);
+  }
+
+  html, body, #root {
+    min-height: 100vh;
+  }
+
+  body {
+    @apply text-text-primary antialiased;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    margin: 0;
+    background-color: rgb(var(--bg));
+    transition: background-color 0.4s ease, color 0.4s ease;
+    background-image:
+      radial-gradient(ellipse at 15% 40%, var(--mesh-1) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 15%, var(--mesh-2) 0%, transparent 55%),
+      radial-gradient(ellipse at 60% 80%, var(--mesh-3) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* ── Cards ─────────────────────────────────────── */
+  .card {
+    background: rgb(var(--bg-glass) / var(--bg-glass-alpha));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    border: 1px solid rgb(var(--border) / var(--border-alpha));
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(var(--border) / 0.3), transparent);
+    pointer-events: none;
+  }
+
+  .card-hover {
+    background: rgb(var(--bg-glass) / var(--bg-glass-alpha));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    border: 1px solid rgb(var(--border) / var(--border-alpha));
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-hover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(var(--border) / 0.3), transparent);
+    pointer-events: none;
+  }
+
+  .card-hover:hover {
+    border-color: rgba(139, 92, 246, 0.4);
+    box-shadow:
+      0 0 0 1px rgba(139, 92, 246, 0.08),
+      0 8px 32px rgba(139, 92, 246, 0.18),
+      0 2px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px) scale(1.01);
+  }
+
+  /* ── Buttons ────────────────────────────────────── */
+  .btn-primary {
+    @apply font-semibold px-5 py-3 rounded-xl transition-all duration-200 text-white inline-flex items-center justify-center gap-2;
+    background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    box-shadow: 0 2px 12px rgba(139, 92, 246, 0.4);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #9d6df8 0%, #7c3aed 100%);
+    box-shadow: 0 4px 24px rgba(139, 92, 246, 0.55), 0 0 40px rgba(139, 92, 246, 0.2);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+  }
+
+  .btn-secondary {
+    @apply font-medium px-5 py-3 rounded-xl transition-all duration-200 text-text-primary inline-flex items-center justify-center gap-2;
+    background: rgb(var(--bg-elevated));
+    border: 1px solid rgb(var(--border) / var(--border-alpha));
+  }
+  .btn-secondary:hover {
+    border-color: rgba(139, 92, 246, 0.4);
+    box-shadow: 0 0 16px rgba(139, 92, 246, 0.15);
+    color: #8b5cf6;
+  }
+
+  /* ── Inputs ─────────────────────────────────────── */
+  .input {
+    @apply rounded-xl px-4 py-3 text-text-primary w-full transition-all duration-200;
+    background: rgb(var(--bg-elevated));
+    border: 1px solid rgb(var(--border) / var(--border-alpha));
+    outline: none;
+    font-family: inherit;
+  }
+  .input::placeholder { color: rgb(var(--text-muted)); }
+  .input:focus {
+    border-color: rgba(139, 92, 246, 0.55);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12), 0 0 16px rgba(139, 92, 246, 0.15);
+  }
+
+  /* ── Glow helpers ───────────────────────────────── */
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.35), 0 0 40px rgba(59, 130, 246, 0.15);
+  }
+  .nav-glow:hover {
+    box-shadow: 0 0 16px rgba(139, 92, 246, 0.2);
+  }
+}
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--text-muted) / 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.45);
+}
+
+/* ── Page fade-in ───────────────────────────────────── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: fadeSlideUp 0.3s ease forwards; }
+
+/* ── Shimmer animation ──────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+/* ── Fire flicker ───────────────────────────────────── */
+@keyframes fireFlicker {
+  0%, 100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+  25% { transform: scale(1.08) rotate(-3deg); filter: brightness(1.2); }
+  50% { transform: scale(0.95) rotate(2deg); filter: brightness(0.9); }
+  75% { transform: scale(1.05) rotate(-1deg); filter: brightness(1.15); }
+}
+.fire-flicker {
+  animation: fireFlicker 1.5s ease-in-out infinite;
+  display: inline-block;
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgb(var(--bg-elevated)) 25%, rgb(var(--bg-elevated) / 0.5) 50%, rgb(var(--bg-elevated)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}

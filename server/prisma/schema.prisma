@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id            Int      @id @default(autoincrement())
+  name          String
+  age           Int
+  gender        String   // "male" | "female" | "other"
+  weight        Float
+  weightUnit    String   @default("kg")
+  height        Float
+  heightUnit    String   @default("cm")
+  activityLevel String   // sedentary | light | moderate | very | extreme
+  goal          String   // cut | bulk | maintain
+  bmr           Float
+  tdee          Float
+  calorieTarget Float
+  proteinPct    Int      @default(30)
+  carbsPct      Int      @default(40)
+  fatsPct       Int      @default(30)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  meals          Meal[]
+  workouts       Workout[]
+  cardioSessions Cardio[]
+  waterLogs      WaterLog[]
+  sleepLogs      SleepLog[]
+  stepLogs       StepLog[]
+  weightLogs     WeightLog[]
+  customTargets  CustomTarget[]
+  dailyLogs      DailyLog[]
+  achievements   Achievement[]
+  settings       Settings?
+}
+
+model Meal {
+  id         Int      @id @default(autoincrement())
+  profileId  Int
+  profile    Profile  @relation(fields: [profileId], references: [id])
+  date       String   // "2026-04-04"
+  category   String   // breakfast | lunch | dinner | snacks
+  name       String
+  calories   Float
+  protein    Float    @default(0)
+  carbs      Float    @default(0)
+  fats       Float    @default(0)
+  time       String?  // "08:30"
+  isFavorite Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model Workout {
+  id         Int        @id @default(autoincrement())
+  profileId  Int
+  profile    Profile    @relation(fields: [profileId], references: [id])
+  date       String
+  name       String     // "Push Day"
+  duration   Int?       // minutes
+  notes      String?
+  isTemplate Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+
+  exercises  Exercise[]
+}
+
+model Exercise {
+  id        Int      @id @default(autoincrement())
+  workoutId Int
+  workout   Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  name      String   // "Bench Press"
+  category  String   // Chest, Back, Shoulders, Arms, Legs, Core, Full Body, Other
+  notes     String?
+  sortOrder Int      @default(0)
+
+  sets      ExerciseSet[]
+}
+
+model ExerciseSet {
+  id         Int      @id @default(autoincrement())
+  exerciseId Int
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  reps       Int
+  weight     Float
+  type       String   @default("normal") // normal | warmup | dropset | failure
+  sortOrder  Int      @default(0)
+}
+
+model Cardio {
+  id             Int      @id @default(autoincrement())
+  profileId      Int
+  profile        Profile  @relation(fields: [profileId], references: [id])
+  date           String
+  activityType   String   // running | cycling | swimming | walking | jumprope | elliptical | other
+  duration       Int      // minutes
+  distance       Float?   // km or mi
+  caloriesBurned Float?
+  createdAt      DateTime @default(now())
+}
+
+model WaterLog {
+  id        Int      @id @default(autoincrement())
+  profileId Int
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  date      String
+  amount    Int      // glasses or custom
+  unit      String   @default("glasses")
+  updatedAt DateTime @updatedAt
+
+  @@unique([profileId, date])
+}
+
+model SleepLog {
+  id       Int     @id @default(autoincrement())
+  profileId Int
+  profile   Profile @relation(fields: [profileId], references: [id])
+  date      String  // date the sleep is FOR (night before)
+  hours     Float
+  quality   String? // good | fair | poor
+  bedtime   String? // "23:00"
+  wakeTime  String? // "06:30"
+
+  @@unique([profileId, date])
+}
+
+model StepLog {
+  id        Int     @id @default(autoincrement())
+  profileId Int
+  profile   Profile @relation(fields: [profileId], references: [id])
+  date      String
+  count     Int
+
+  @@unique([profileId, date])
+}
+
+model WeightLog {
+  id        Int     @id @default(autoincrement())
+  profileId Int
+  profile   Profile @relation(fields: [profileId], references: [id])
+  date      String
+  weight    Float
+
+  @@unique([profileId, date])
+}
+
+model CustomTarget {
+  id        Int      @id @default(autoincrement())
+  profileId Int
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model DailyLog {
+  id            Int      @id @default(autoincrement())
+  profileId     Int
+  profile       Profile  @relation(fields: [profileId], references: [id])
+  date          String
+  completionPct Float    @default(0)
+  targetsMet    String?  // JSON string: { "water": true, "sleep": false, ... }
+  notes         String?
+
+  @@unique([profileId, date])
+}
+
+model Achievement {
+  id        Int      @id @default(autoincrement())
+  profileId Int
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  badge     String   // first_step | week_warrior | month_master | etc.
+  earnedAt  DateTime @default(now())
+
+  @@unique([profileId, badge])
+}
+
+model Settings {
+  id               Int     @id @default(autoincrement())
+  profileId        Int     @unique
+  profile          Profile @relation(fields: [profileId], references: [id])
+  theme            String  @default("dark")
+  weightUnit       String  @default("kg")
+  heightUnit       String  @default("cm")
+  distanceUnit     String  @default("km")
+  dateFormat       String  @default("DD/MM/YYYY")
+  waterGoal        Int     @default(8)
+  waterUnit        String  @default("glasses")
+  stepGoal         Int     @default(10000)
+  sleepGoal        Float   @default(8)
+  streakThreshold  Int     @default(80)
+  restTimerDefault Int     @default(90)
+}
+
+model Quote {
+  id     Int    @id @default(autoincrement())
+  text   String
+  author String
+}
